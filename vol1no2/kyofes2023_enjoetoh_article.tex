@@ -1,0 +1,345 @@
+\documentclass[10pt, a5paper, twoside]{jsarticle}
+
+\usepackage{okumacro}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{amsmath}{}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{url}
+\usepackage{here}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{wrapfig}
+\usepackage{makeidx}
+\usepackage{braket}
+\usepackage{ascmac}
+\usepackage{fancyhdr}
+\usepackage[top=20truemm,bottom=20truemm,left=15truemm,right=15truemm]{geometry}
+
+\pagestyle{fancy}
+	\fancyhead{}
+	\fancyhead[RE]{円城塔研究}
+	\fancyhead[LO]{京フェス2023円城塔賞攻略部屋資料}
+	\fancyhead[LE, RO]{\thepage}
+	\fancyfoot{}
+	\fancyfoot[LE, RO]{\footnotesize{The Journal of EnJoeToh Research, Vol.1, No.2, 2023} }
+
+\theoremstyle{definition}
+	\newtheorem{dfn}{定義}
+	\newtheorem{thm}{定理}
+	\newtheorem{prf}{証明}
+
+\setcounter{page}{22}
+
+\begin{document}
+
+	~ %強制改行
+
+	\begin{center}
+
+		\Large{京フェス2023円城塔賞攻略部屋資料}
+
+		\vspace{3mm}
+		
+		\large{下村思游}
+
+	\end{center}
+
+	\vspace{3mm}
+
+	\section{はじめに}
+
+		本稿は京都SFフェスティバル2023合宿企画「カクヨム円城塔賞攻略部屋」の資料である。
+
+		本企画で円城塔賞を獲るために必要な実用的なアドバイスを提供することはほとんどない(かも)。		
+
+	\section{円城塔本人からのアドバイスまとめ}
+
+		\subsection{短篇小説のメリット}
+
+			\begin{itemize}
+				\item 小説の使命のひとつは、モックの作製や、可能なお話なるものを高速でパラメータサーチしていくことと考えることもできます。\cite{int}
+			\end{itemize}
+
+		\subsection{応募作に求めるもの}
+
+			\begin{itemize}
+				\item 「文芸」ということですので、なんでもよろしいのです。ただやはり、欲しいのは新奇性ではないでしょうか。\cite{int}
+			\end{itemize}
+
+		\subsection{具体的なアドバイス}
+
+			\begin{itemize}
+				\item 得意不得意を自覚する\cite{nkm1}
+
+				\vspace{1mm}
+
+				得意を伸ばすことは繰り返し強調されている
+
+				\vspace{2mm}
+
+				\item 書けるものを書こう\cite{nkm1}
+
+			\end{itemize}
+
+		\subsection{避けるべきこと}
+
+			\begin{itemize}
+				\item なんとなくダラダラ書かない\cite{nkm2}
+
+				\vspace{2mm}
+
+				\item 気軽に性犯罪とか入れない\cite{nkm2}
+
+				\vspace{2mm}
+
+				\item その題材を大事にしている人間がいることを忘れない\cite{nkm2}
+
+				\vspace{2mm}
+
+				\item 実際にその舞台で暮らしている人がいるかもしれないことを忘れない\cite{nkm2}
+
+				\vspace{2mm}
+
+				\item 円城塔っぽいものは受賞しにくいので避けよ\cite{twi}
+
+				\vspace{1mm}
+
+				実際、直近で非常に精度の高い円城塔シミュレータ\cite{aki} が公開されているので、円城塔パロディ芸で一発狙おうとするなら、それを越えなければならない
+
+			\end{itemize}
+
+	\section{下村からのアドバイス}
+
+		\subsection{前提}
+
+			下村は某賞の審査員を務めていた。
+
+			基本的に、書き手として全力で書いた原稿に対して、こちらも読み手としての全てを懸けて読んでいるが、ものには限度がある。
+
+			多少のエラーは見逃すが、流石に以下のようなことには注意してほしい。
+
+		\subsection{注意してほしいこと}
+
+			\begin{itemize}
+
+				\item 小説を読もう
+
+				\vspace{1mm}
+
+				　面白いと感じる小説を、なぜあなたは面白いと感じたのだろうか。
+
+				　面白いポイントを書き出してみることで、文章も洗練されるし、小説の技巧に気づくこともある。
+
+				\vspace{2mm}
+
+				\item 文量を守ること
+
+				\vspace{1mm}
+
+				　カクヨムWeb小説短編賞は400字以上1万字以下と明記されているので、これをきちんと守りましょう。
+
+				　個人的には、1万字で募集をかけた賞なら12000字くらいまでなら読むかな、という感じ。（外野の人間なので保証しません）
+
+				\vspace{2mm}
+
+				\item 応募前に読み直す
+
+				\vspace{1mm}
+
+				　とんでもない誤字とか、そもそも話がつながってないとか、結構あります。読み返した形跡のない文章を読むのは互いに無駄になるので、きちんと読み返して、不備のないようにしましょう。
+
+				\vspace{2mm}
+
+				\item 連作の一部を抜き出して送るのはやめましょう
+
+				\vspace{1mm}
+
+				　結構います。
+
+				　キャラや世界観に愛着があるというのはわかるが、読者として理解不能なのでやめてほしい。
+
+				\vspace{2mm}
+
+				\item 自身の作品が商品であることを自覚する
+
+				\vspace{1mm}
+
+				　受賞した場合、商品として市場で流通することになる、あるいは自身が出版社との取引先になることを自覚しましょう。
+
+				　他者が読んでどう思うか、自分の想定していない読者に読まれたとき耐えうるか、なども気を配るべきでしょう。リスクのあるものを商品として販売することは困難。
+
+				\vspace{2mm}
+
+				\item （SFの場合）自分の使ったガジェットがどこまで真実なのか、どこから嘘なのかを把握する
+
+				\vspace{1mm}
+
+				　定義がころころ変わって都合のいいように使われると読みにくいし、印象は悪い（個人差あり）。少なくとも、下村はムッとします。
+
+				　これだけで小説の価値が毀損されるわけではないが、ガジェットで読ませるタイプのSFでこれをやられると、全く評価できなくなるのでやめてほしい。そろそろ、不確定性関係、不完全性定理、量子計算あたりの誤用はやめましょう。
+
+				　量子脳仮説はまあいいとして、量子脳を別の量子系に移しとれる、というのは流石にやめてほしい（$\because$量子複製禁止定理）。これらは任意の結果を許すものではなく、逆に厳しい制限を与える規則です。「私の思う量子計算機」を真の量子計算機であるかのように見せかける欺瞞は物語であっても評価しかねます。
+
+				　逆に、「〜は十分複雑なので」とか言われたら、私はなんでも許します（$\because$対象は十分複雑なので）。
+
+			\end{itemize}
+
+	\section{可能なすべてのアプローチ（の一部）}
+
+		\begin{itemize}
+
+			\item 円城塔のブックメーター\footnote{\url{https://bookmeter.com/users/6997}}を確認して読書傾向を探る
+
+			\vspace{1mm}
+
+			　読んでる数が尋常じゃなく多い。
+
+			\vspace{2mm}
+
+			\item 円城塔がぜひ読みたくなるタイトルを考える
+
+			\vspace{1mm}
+
+			　上記ブックメーターから、円城塔が読んだ本のタイトルを全て取得し、生成してみる。円城塔が読んだ本は円城塔の好みを反映しているはずなので、そこから生成したタイトルは円城塔の好みに近いはず、という気持ち。
+
+			\vspace{2mm}
+
+			　実際にやってみた。
+
+			\begin{center}
+
+				ハングルの誕生 (集英社文庫(コミックス)
+
+			\end{center}
+
+			　実在のタイトルに強く引きずられてしまい、全然面白くないことが判明。
+
+			\vspace{2mm}
+
+			\item 円城塔シミュレータを作成し、シミュレータに「円城塔賞にふさわしい」と言わせる
+
+			\vspace{1mm}
+
+			　出来立てほやほやの先行研究\cite{aki} が存在する。
+
+			　円城塔のテクストの初期値鋭敏性、円城塔に対して決定論的自由意思利用改変攻撃を仕掛ける、力学系としての円城塔テクスト、円城塔の内部エネルギーの存在の示唆など、一部の人が大変喜びそうなトピックが挙げられているので、ぜひご一読を。
+
+			　ただし、ここには、
+　　　		
+				\item 円城塔シミュレータは円城塔を十分精度よく再現している
+
+				\item 円城塔の創作物への評価関数と、円城塔の自作に対する評価関数が全く同一である
+
+			という2つの強力な仮定があり、どちらも相当疑わしいことに注意。
+
+		\end{itemize}
+
+	\section{可能な物語の探究}
+
+		\subsection{漱石の定理}
+
+		\begin{dfn}
+			
+			両側無限長文字列、片側無限長文字列
+
+			両側無限長文字列とは、ある文字から両側に無限長の文字列が続く文字列である。
+
+			e. g. : ....0000...., ...1111...., ... 
+
+			片側無限長文字列とは、ある文字から片側に無限長の文字列が続く文字列である。
+
+			e. g. : 0000..., 1111..., e, $\pi$
+		
+		\end{dfn}
+
+		\begin{thm}
+
+			漱石の定理
+			
+			任意の両側無限長文字列を含む両側無限長文字列は存在しない。
+		
+		\end{thm}
+
+		\begin{prf}
+
+			漱石の定理の証明
+
+			...0000...なる両側無限長の文字列と...1111...なる両側無限長の文字列は両立し得ない。
+		
+		\end{prf}
+
+		\subsection{漱石の定理の主張}
+
+		「両側無限長文字列」なる文字列はただ一つではなく複数存在し、しかも互いに独立していて比較不能なものが無数に存在することを主張している。
+
+		つまり、“全ての可能な文字列”の中には、互いに比較不能な独立な文章が存在する。
+
+		なお、余談だが、漱石の定理の由来は、両側無限長文字列は「same space ヲ occupy\cite{ssk}」できないから。
+
+		結局、“全て”として可能な文字列をくくってみせたとしても、そこからこぼれ落ちるものがあるね、ということ。
+
+		したがって、『SRE』「Writing」冒頭の「全ての可能な文字列。全ての本はその中に含まれている。」は偽であろうと考えている。
+
+		「全ての可能な文字列」の解釈や構成方法に議論の余地が残されているため、断言はできないものの、まあ偽であろう。
+
+	\section{今後の課題}
+
+		\begin{itemize}
+
+			\item 文字列の数学の研究を進展させる
+
+			\vspace{1mm}
+
+			　メモは解説本下書き\footnote{\url{https://scrapbox.io/allreferenceengine/%E8%A7%A3%E8%AA%AC%E6%9C%AC%E4%B8%8B%E6%9B%B8%E3%81%8D}}に置いてある
+
+			\vspace{2mm}
+
+			\item 自然言語処理およびクラスタリング分析のチューニングを行う
+
+			\vspace{1mm}
+
+			　円城塔作品のクラスタリング（ジャンルわけ）を行う
+
+			\item 筒井康隆作品における筒井俊隆作品の混入を再確認する
+
+			\vspace{2mm}
+
+			\item 円城塔・星新一・筒井康隆の比較を行い、“円城塔らしさ”を確認する
+
+			\vspace{2mm}
+
+			\item 星新一の文体変遷を自然言語処理の観点から確認する
+
+			\vspace{2mm}
+
+			\item 自分でも円城塔賞に応募してみる
+
+		\end{itemize}
+
+	\begin{thebibliography}{99}
+
+		\bibitem{int} 円城塔, カクヨムWeb小説短編賞2023円城塔インタビュー, \url{https://kakuyomu.jp/info/entry/webcon9_enjoetoh}, 2023
+
+		\bibitem{nkm1} 円城塔, 中身について考える1(2023), scrapbox, \url{https://scrapbox.io/enjoetoh/%E4%B8%AD%E8%BA%AB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E8%80%83%E3%81%88%E3%82%8B%EF%BC%91(2023)}
+
+		\bibitem{nkm2} 円城塔, 中身について考える2(2023), Scrapbox, \url{https://scrapbox.io/enjoetoh/%E4%B8%AD%E8%BA%AB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E8%80%83%E3%81%88%E3%82%8B%EF%BC%92(2023)}
+
+		\bibitem{twi} 円城塔, X, \url{https://x.com/EnJoeToh/status/1713545216442167530}
+
+		\bibitem{aki} Akimasa Kitajima, 円城塔を近似する.ipynb, \url{https://colab.research.google.com/drive/1oXxBIYJvvUYsVZP6WYAUCb3QK09zTJtO}, 2023
+
+		\bibitem{ssk} 夏目漱石, 断片, 1905-1906?
+
+		\bibitem{kin} 金明哲, 文節パターンに基づいた文章の書き手の識別, 行動計量学, \textbf{40}(1), 17-28, 2013, \url{https://doi.org/10.2333/jbhmk.40.17}
+
+	\end{thebibliography}
+
+	\section*{注記}
+
+		本資料は、2023年に開催された京都SFフェスティバル2023で行われた「カクヨム円城塔賞攻略部屋」のために制作された2023年12月成立の現資料\footnote{\url{https://scrapbox.io/allreferenceengine/%E4%BA%AC%E3%83%95%E3%82%A7%E3%82%B92023%E5%86%86%E5%9F%8E%E5%A1%94%E8%B3%9E%E6%94%BB%E7%95%A5%E9%83%A8%E5%B1%8B%E8%B3%87%E6%96%99}}をPDFとして再編集したものである。
+
+		なお、当日は本資料で紹介したツールの製作者であるAkimasa Kitajima氏や円城塔ご本人も参加し、イベントは盛況のうちに終了した。
+
+\end{document}
