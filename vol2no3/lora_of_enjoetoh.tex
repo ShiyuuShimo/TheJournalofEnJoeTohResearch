@@ -1,0 +1,389 @@
+\documentclass[10pt, a5paper, twoside]{jsarticle}
+
+\usepackage{okumacro}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{amsmath}{}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{url}
+\usepackage{here}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{wrapfig}
+\usepackage{makeidx}
+\usepackage{braket}
+\usepackage{ascmac}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{mdframed}
+\usepackage[top=20truemm,bottom=20truemm,left=15truemm,right=15truemm]{geometry}
+
+\pagestyle{fancy}
+	\fancyhead{}
+	\fancyhead[RE]{円城塔研究}
+	\fancyhead[LO]{円城塔のローラ}
+	\fancyhead[LE, RO]{\thepage}
+	\fancyfoot{}
+	\fancyfoot[LE, RO]{\footnotesize{The Journal of EnJoeToh Research, Vol.2, No.3, 2024} }
+
+\theoremstyle{definition}
+	\newtheorem{axi}{公理}
+	\newtheorem{dfn}{定義}
+	\newtheorem{thm}{定理}
+	\newtheorem{hyp}{予想}
+	\newtheorem{ths}{提唱}
+	\newtheorem{prn}{原理}
+
+\begin{document}
+
+	~ %強制改行
+
+	\begin{center}
+
+		\Large{円城塔のローラ \\ Apple silicon専用機械学習フレームワークを用いた \\ 円城塔LLMの開発と運用}
+
+		\vspace{3mm}
+
+		\large{LoRA of EnJoeToh \\ Development and operation of EnJoeToh LLM}
+
+		\vspace{3mm}
+		
+		\large{下村思游}
+
+	\end{center}
+
+	\vspace{3mm}
+
+	\begin{abstract}
+
+		Apple silicon専用の機械学習フレームワークMLXと，MLXを用いた大規模言語モデル（LLM）を利用するためのツール群MLX-LMを用いて，円城塔の小説を模倣することが期待される小説生成機関を作成したので，作成方法や運用結果について紹介する．
+
+		\vspace{3mm}
+
+		We developed the novel generating engine expected to imitate the novels written by EnJoeToh. It is made with MLX, MLX-LM, and Apple silicon. We introduce how to make it and result of operation.
+
+	\end{abstract}
+
+	\section{導入}
+
+		Appleは，自社で開発したApple silicon専用の機械学習フレームワークMLXを公開し，またMLXを用いた大規模言語モデル（Large Language Model, LLM）を利用するためのツール群MLX-LMを開発・公開している．
+
+		一方，円城塔は，自身のGitHubで小説データセットを公開している．データセットには2000字$\times$100ファイルの『通信記録保管所』\cite{storage}，10000字$\times$4ファイルの『花とスキャナー』\cite{scanner}の2種類があり，いずれもCC BY-NC 4.0で公開されているうえ，“個人的な読書，非営利での朗読／機械学習のデータなどに利用することができます”として，機械学習の学習データとして利用することを明確に許可している．
+
+		また，国立情報学研究所は，学習済みの日本語大規模言語モデルとしてllm-jp-3-13bをオープンソースで開発・公開している．
+
+		これらは，いずれも無料で利用可能であり，しかもその作成手法はいずれも合法であると推定される．今回は，追加学習元となる円城塔データセットが小さいため，追加学習にはLoRAを採用した．これらの技術を活用すること，さらにその活用に関する実際の手法を共有することによって，機械学習の成果を安全に活用した創作活動の拡大に貢献する．
+
+	\section{方法}
+
+		MLXがApple silicon専用のため，Apple siliconを搭載したmacのみを想定する．当方はM4 mac mini (RAM32GB)を使用している．学習にはRAMを20GB以上使用するため，RAM24GB以上を搭載したマシンで実行することを勧める．
+
+		あらかじめ，Pythonパッケージマネージャのuvを導入しておくこと．uvについては，\cite{tbys}を参照されたい．
+
+		以下のコマンドをターミナルで実行して，作業ディレクトリを用意する．MLX-LMのデータセットと，円城塔の学習用データセットも同時に用意する．
+
+		\begin{mdframed}
+			\begin{minted}[breaklines]{bash}
+# 作業ディレクトリを配置したいディレクトリに予め移動しておく
+# 依存関係から，pythonのバージョンとして3.12を指定すること
+uv init -p 3.12 enjoe_lora
+cd enjoe_lora
+git clone https://github.com/EnJoeToh/stories_2000.git
+uv add datasets mlx-lm
+			\end{minted}
+		\end{mdframed}
+
+		llm-jp-3-13bを量子化(quantization)\footnote{物理学用語ではなく，機械学習の用語．高精度の浮動小数点を用いて制作した高精度の大規模言語モデルを，低精度の浮動小数点を用いた低精度のモデルに置換すること．これによって，高性能な計算機でしか扱えないモデルを軽量化し，家庭用の計算機でも扱うことが出来るようになる\cite{ibm}．}されたモデルに置換する．
+
+		\begin{mdframed}
+			\begin{minted}[breaklines]{bash}
+mlx_lm.convert -q --hf-path llm-jp/llm-jp-3-13b --mlx-path llm-jp-3-13b-q
+			\end{minted}
+		\end{mdframed}
+
+		以下のPythonコード（split\_doc.py）を用意し，作業ディレクトリ（ここでは\texttt{enjoe\_lora}）直下に配置する．
+
+		\begin{mdframed}
+			\begin{minted}[breaklines]{Python}
+from datasets import load_dataset
+dataset_enjoe = load_dataset("text", data_files="stories_2000/0*.txt", sample_by="document")
+dataset_enjoe = dataset_enjoe['train'].train_test_split( test_size=0.1, shuffle=False)
+dataset_enjoe["train"].to_json( "stories_2000_sample_by_document/train.jsonl")
+dataset_enjoe["test"].to_json( "stories_2000_sample_by_document/test.jsonl")
+			\end{minted}
+		\end{mdframed}
+
+		上記のPythonファイルを実行する．
+
+		\begin{mdframed}
+			\begin{minted}[breaklines]{bash}
+python split_doc.py
+			\end{minted}
+		\end{mdframed}
+
+	続けて，LoRAの学習を行う．以下のコードをターミナルで実行し，1時間ほど待つ．RAMは24GB前後使用する．
+
+		\begin{mdframed}
+			\begin{minted}[breaklines]{bash}
+cp stories_2000_sample_by_document/test.jsonl stories_2000_sample_by_document/valid.jsonl 
+mlx_lm.lora --model llm-jp-3-13b-q --train --data stories_2000_sample_by_document --batch-size 1 --iters 100 --adapter-path llm-jp-3-13b-q_it100_seed42 --seed 42 --steps-per-report 20 --save-every 50 --max-seq-length 1300
+			\end{minted}
+		\end{mdframed}
+
+	これが完了すると，小説の生成が行えるようになる．以下のようにして小説を生成する．
+
+		\begin{mdframed}
+			\begin{minted}[breaklines]{bash}
+mlx_lm.generate --adapter-path llm-jp-3-13b-q_it100_seed42 -m 1300 --temp 0.8 --seed 2 --model llm-jp-3-13b-q --ignore-chat-template --prompt "　誰もがいつかは帰ってこられると考えて旅立つが、帰ってきたものは誰もいない。"
+			\end{minted}
+		\end{mdframed}
+
+		この呪文のうち，\texttt{temp}，\texttt{seed}，および最後に入力する\texttt{prompt}が主なパラメータであり，これらを適当にいじることで，無数の差分を得ることが出来る．なお，\texttt{prompt}に続く\texttt{" "}の中身が，出力させる小説の冒頭になる．
+
+		作業を中断する場合は，\texttt{deactivate}を実行して，仮想環境を終了する．
+
+		\begin{mdframed}
+			\begin{minted}[breaklines]{bash}
+deactivate
+			\end{minted}
+		\end{mdframed}
+
+		作業を再開する場合は，作業ディレクトリ（ここでは\texttt{enjoe\_lora}）に入り，\texttt{activate}して仮想環境を開始する．
+
+		\begin{mdframed}
+			\begin{minted}[breaklines]{bash}
+. .venv/bin/activate
+
+mlx_lm.generate --adapter-path llm-jp-3-13b-q_it100_seed42 -m 1300 --temp 0.8 --seed 2 --model llm-jp-3-13b-q --ignore-chat-template --prompt "　全ての可能な適当な文字列。そこに全ての小説が含まれているというけれど、僕にはそうは思えない。"
+			\end{minted}
+		\end{mdframed}
+
+	\clearpage
+
+	\section{結果}
+
+		生成された小説の中から，以下の一例を示す．
+
+		\begin{quote}
+			　誰もがいつかは帰ってこられると考えて旅立つが、帰ってきたものは誰もいない。
+		\end{quote}
+			
+		\begin{quote}
+			　そんなに暗い話でもない。
+
+			　もちろん帰れなくなった者もいるにはいるが、大半はわざと帰れない。
+
+			　内心のしこりを解消したり、気になる疑問を解決したり、様々な理由で人々は異世界へと飛び立つ。あるいは異世界が人々の前に姿を現す。
+
+			　「異世界」は好んで人の前に姿を現そうとはしないが、「異世界」に人々が好まれて現れようともしないのだから同じようなことである。
+
+			　「異世界」は「異世界」である。
+		\end{quote}
+
+		\begin{quote}
+			　異世界への入り口は案外多い。
+
+			　都市の中心部にある巨大な石の柱、行方不明者が帰ってきた場所として有名な山のふもと、海や湖の岸辺、郊外に残された廃墟、ダンジョンの扉、書物を納める書庫の奥。わけのわからない巨大な迷宮をさまよっても異世界にたどり着けるかも知れない。
+
+			　異世界への入り口は多くの場合、本人の心の内側にあって、誰もがその姿を見ない。
+
+			　異世界との入口は目に見えるものではない。光として見えるものでもない。
+
+			　異世界へと通じた扉は、強い力を持っている者にとっては扉として見える。穴の口として見える。
+
+			　強い力を持っていない者は扉の横を通り抜け、穴の横を通り過ぎる。
+
+			　そして強い力を持っている者だって、穴の口や扉に見えるのはその事態のときだけで、通りすがりに穴の口があり、扉があってみても、そんなものが見えたことはない。
+		\end{quote}
+
+		\begin{quote}
+			　現実が、現実の世界に見えている。
+
+			　現実は現実の世界に見えているのだし、現実は現実の世界に見えている。
+
+			　現実は現実の世界に見た目では見えない。
+
+			　私たちの脳みそは、現実の方を現実であったこととして処理する。
+
+			　現実の方を現実として処理する。
+
+			　そのために現実ははないものとされ、世界は様々に変質する。
+
+			　このことについて正確に述べるのは難しい。
+
+			　私達は確かに目でなにかを眺めている。
+
+			　しかし目で眺めている現実と、脳が処理している現実とでは、その内容はかなり違っている。
+
+			　私達が現実を脳に伝えているのではない。
+
+			　私達は脳の現実を眺めている。
+
+			　多くは、そして継続的に、穴の口や扉の向こうを見通す力はない。
+		\end{quote}
+
+		\begin{quote}
+			　穴の口や扉の向こうを見通す力を持たない人物は、多くはその力の存在に気づいていない。
+
+			　穴の口や扉のむこうへは行くことができない。
+
+			　三平方の定理は穴の口や扉では真にならない。
+
+			　穴の口や扉は、もっと強い力によって奪取できる。
+
+			　穴の口や扉のむこうへは行くことができない。
+
+			　でも行ったやつがいる。
+
+			　別に行ったやつを非難するつもりはない。
+
+			　ただ、行ったやつは観測の網から漏れ落ちる。
+
+			　穴の口や扉のむこうへは行くことができない。
+
+			　穴の口や扉のむこうへは行くことができない。
+
+			　穴の口や扉のむこうへは行くことができない。
+		\end{quote}
+
+		\begin{quote}
+			　穴の口や扉のむこうへは行くことができない。
+		\end{quote}
+
+		\clearpage
+
+		これは極めて良くできた方の作品であることに注意したい．このレベルの作品は，20--50個生成させて出てくるかどうか，という肌感である．無論，これが最も優れた作品というわけではない．
+
+		本作も含め，1000字を超えたあたりから同じ文言が頻出し，後半1/3で急速に同語反復に陥り小説として破綻する出力が非常に多く見られた．
+
+		また，生成中にシェルを破壊されて強制終了する事態がしばしば発生した．おそらく，シェル上では表示出来ない破壊的な文字列を流し込まれているものと思われる．これを回避するには，シェルへの標準出力を省略し，パラメータを変えて生成を繰り返すようにして，後から文章を確認する形にすればよい．
+
+		これまでの経験から，promptを固定し，tempを0.75--0.84の範囲で舐めながら，seedを変化させていくという形で2次元パラメータ空間の探索をするのが効率的なように思われる．
+
+		\begin{mdframed}
+			\begin{minted}[breaklines]{bash}
+#!/bin/zsh
+for SEED in {0..99} ; do
+    for TEMP in {75..84} ; do
+        TEMP_para=0.${TEMP}
+        mlx_lm.generate --adapter-path llm-jp-3-13b-q_it100_seed42 -m 1300 --temp $TEMP_para --seed $SEED --model llm-jp-3-13b-q --ignore-chat-template --prompt "　誰もがいつかは帰ってこられると考えて旅立つが、帰ってきたものは誰もいない。" > s${SEED}t${TEMP}.txt
+    done
+done
+			\end{minted}
+		\end{mdframed}
+
+	\clearpage
+
+	\section{解説}
+
+		\subsection{機械学習に関する平易な解説}
+
+			今回用いたモデル・ツール・データセットはすべてオープンソースであり，そのすべての経路を辿ることが出来る．
+
+			しかしながら，公開されているとはいえ，その全貌は膨大であり，特に言語モデルに関する技術をくまなく調べきることは非常に困難である，したがって，本項では，今回作成した小説生成機関の大枠について，出来るだけ平易に解説する．
+
+			\subsubsection{大規模言語モデル(Large Language Model)}
+
+				言語モデルとは，文字列を集めたデータセット\footnote{これをコーパス(corpus)とも言う．円城塔の短編「土人形と動死体 If You were a Golem, I must be a Zombie」における動死体は，死体(corpus)とコーパスをかけたギャグ．}から機械学習によって作成された確率モデルである．この確率モデルは，ある文字列の次に続く文字列\footnote{この後続の文字列は，人間が単語・文節として認識するものとは必ずしも一致しない．この文字列のパーツのことをトークン(token)という．}の出現確率を返す確率モデルであり，その出現確率は元となったデータセットから導出されたものである．
+
+				要するに，人間が発した言葉を計算機を用いて処理し，ある文字列の次に来るべき文字列を統計的に与えるものが，言語モデルと呼ばれている\footnote{ここで，人間の言葉を模倣しようというのに，確率的な模倣でいいのだろうかという疑問がある．ところが，そもそも，人間の言葉自体も，脳内で確率的に生成されると考えられている．このときの確率過程として中華料理店過程というものが支持されている．円城塔の短編「イグノラムス・イグノラビムス」は，脳細胞のネットワークと中華料理店過程をモチーフにしている．}．結局のところ，結果を統計的に与えている，ということが重要であり，これこそが，テッド・チャンが「AIは応用統計学(applied statistics)と呼ばれるべきだ」\cite{ted}と主張する根拠である．
+
+				一般に，元となるデータセットは大きければ大きいほどよい．なぜなら，大きくなればなるほど，真の言語全体に近づいていくからである．したがって，より大きいデータセットを用いて学習したより大きい言語モデルがよりよいモデルということになる．
+
+				今回用いたllm-jpは，国立情報学研究所(National Institute of Informatics, NII)が開発・公開している日本語大規模言語モデル(Large Language Model, LLM)である．特に，今回用いたllm-jp-3-13bは極めて大きなモデルで，日本語に特化したLLMとしては（一般人がアクセス出来るものの中では）最大のモデルである．
+				
+			\subsubsection{LoRA}
+
+				Low-Rank Adaptationの略．既に学習済みのモデルに対して，新たに少数の学習データを追加し，この新たに追加した学習データの特徴へのファインチューニングを行うのに便利な機械学習の手法である．円城塔の短編「ローラのオリジナル」に登場するローラはこれのこと．大規模なデータを用意せずとも，学習済みの言語モデルと少数の追加データさえあればよく，また時間・電力の消費を大幅に抑えられ，しかも特定の特徴を学習することに有利であることから，特定の作家を模倣した学習モデルの生成に用いられることが多い．
+
+				実際，今回用いたLLMであるllm-jp-3-13bのデータセットは664GB，LoRAに用いた円城塔データセットは1.3MBであり，その差はまさに圧倒的である．
+
+		\subsection{機械学習と著作権}
+
+			言語モデルを作成する際は，人間が作成したテキストをデータセットとして利用する．著作権は，著作物が創作された時点で自動的に付与される（無方式主義）．したがって，機械学習は著作権とは切り離せない．ここでは，機械学習に関連する著作権について，平易に解説する．
+
+			日本国において，著作権は原則保護されているが，著作権者の了解を得ることなく著作物を利用出来る例外規定が存在する．著作権法第30条の4では，元の著作物の創作的特徴の享受を目的としない場合に限り，著作者の許諾を得ることなく著作物を機械学習のデータセットとして用いることを認めている\footnote{他にも留意点が多数存在し，場合によっては個別具体的な司法判断等が必要になることがある．詳しくは\cite{tx}ほか，法律家による意見を参照されたい．}．
+
+			llm-jpは，Wikipedia日本語版のテキストや，コモンクロール\footnote{米国を本拠地とする非営利団体．大規模かつ良心的なウェブクローリングを行なっており，それによって得られたウェブテキストを公開・配布している．}のウェブテキストのほか，国立国会図書館(National Diet Library, NDL)から提供された，国立国会図書館インターネット資料収集保存事業(Web Archiving Project, WARP)で収集されたPDF・HTMLに含まれる日本語テキストをデータセットとしている．コモンクロールやWARP\footnote{WARPの収集対象は，主に国・地方公共団体などの公的団体である．ここで，公的団体のウェブサイトには著作権を認めないとする意見もあるだろう．しかし，実際の公的団体のウェブサイトには，著作権保護期間中の俳人・詩人の作品が丸ごと掲載されている事例がしばしば見られる．\cite{aomr}は青森県の青森県近代文学館のHPで，荻原井泉水（1884--1976）の俳句の全文が含まれてしまっている．短歌・俳句・川柳は一句だけで作品全体と見做されるため，このように著作権の保護対象となる作品が非合法に含まれてしまっている例が除ききれない．}によるウェブテキストには，著作権が存在するテキストが含まれているが，先述の著作権法第30条の4による例外規定から，これらのウェブテキストを機械学習に用いることは（日本国内においては）合法である．
+
+			一方で，著作物をLoRAによる学習のデータセットとして用いることは，一般には非合法となる可能性が高い．なぜなら，LoRAは用いたデータセットが有する特徴に特化したモデルを作成する手法であり，著作権法第30条の4の前提部分である“元の著作物の創作的特徴の享受を目的としない場合”に該当しないと判断される可能性があるからである．したがって，著作物をLoRAのデータセットとして用いる場合は，著作権者から許諾を得る必要がある．今回LoRAに使用した円城塔データセットは，予め円城塔が機械学習への利用を許諾したものであるため，合法である．
+
+	\section{議論}
+
+		 \subsection{国立情報学研究所が公開するllm-jpの元データの再配布に関する著作権法上の問題}
+
+		 	先述の通り，NIIは，NDLが収集・公開しているWARPで収集したPDF・HTMLに含まれる日本語文書の提供を受け，これをllm-jpの元データとしてHugging Faceで公開・再配布しているが，これは著作権法上の違法行為にあたると考えられる．
+
+		 	一般に，インターネット上の公開情報であっても，サイトを構成するデータを保存し，かつ再配布することは複製権によって禁止される．NDLにおけるWARPが合法とされているのは，NDLがインターネット資料\footnote{国立国会図書館法第25条の3第1項の規定により同項に規定する“インターネット資料”を指す．これは著作権法第43条に表れている“インターネット資料”と同一であることが明記されている．}を保存・公開（再配布）することは，著作権による利用の制限を受けない例外であることが著作権法第43条および国立国会図書館法第25条の3で定められているからである．
+
+		 	一方で，NDLがWARPで収集した情報をNIIが再配布することは，著作権法および関連法規等に明記されていない．したがって，NIIがHugging FaceにWARP由来のデータセットを公開することは，WARPの収集対象とWARPの収集個体群が公開情報であるとしても，著作権者から個別に許諾を得ていない場合は複製権の侵害にあたる．
+
+		 	NIIがこの違法状態を解消するためには，生のデータセットの公開を停止し，データセットを採取したWARPのURLのリストのみを掲載すればよい．これを実行した場合，llm-jpは厳密なオープンソースではなくなってしまうが，これは著作権法を遵守するための必要最小限のやむを得ない措置であろう．
+
+		\subsection{円城塔の模倣を生成するために，エンジニアが円城塔を模倣する必要がある問題}
+
+			今回の試験運用で，円城塔らしい文章の模倣をする小説生成機関の作成に成功したが，実際には，円城塔らしい出力を得るためには，最初の入力を円城塔っぽくした方が具合が良さそうである，という知見が得られた．これは私の感覚的なものに過ぎないのだが，現状では円城塔っぽい入力の方が打率がいい気がする．これは，LoRAによる学習を経て，依拠する言語モデルが円城塔の文体の確率分布に近付いているためだろう．円城塔っぽい入力以外では，統計的な推論を行うことが出来ず，円城塔風の出力としては破綻するのだと考えられる．
+
+			円城塔を模倣するためには円城塔を模倣する必要があるのはそうなのだが，この程度なら円城塔ファンである自分自身が模倣した方が精度・速度ともに優れているという結果になりそうである．真に工学的な生成を目指すのであれば，操作手に依らず一定かつ十分な出力が得られることが期待されるため，より一層の技術開発が必要となるだろう．少なくとも，同じ文字列のみを出力し続ける極端な振動状態\footnote{この現象を，アトラクタへの吸引と呼称している．}に落ち込んでしまっているようなファイルを機械的に検知して取り除く必要がある．
+
+		\subsection{定量的・定性的評価}
+
+			今回作成した小説生成機関は，秒間約12トークンを生成するため，1300トークン（2000--4000字）の小説1作の生成には約2分かかる．
+
+			単純な生成速度は人間より十分に速いが，その出力結果は質が低く，そのまままともに読めるものは20--50作に1作程度，小説としても面白いところがあるものはさらに数作に1作というところまで絞られてしまう．結果として，一晩かけてまともな小説は2000字1作しか得られないことになり，それを人間が改稿して並び替えて最終的な原稿を作成するとなるとますます時間がかかることになる．
+
+			今回，作成した小説生成機関を利用し，計1059作（推定320万字）を生成させ，そこから8作を選んで最低限の改稿を行い，適宜並び替えて13000字の小説を作成した．この作業の総労働時間は100時間程度である\footnote{人間の稼働時間のみ勘定している．睡眠時間・労働時間・休憩時間に計算機のみが稼働していた場合や，人間による査読と計算機による生成が並行していた場合があることから，実際の総稼働時間はこの3倍程度と推定してもいいだろう．}．つまり，最終的な生成速度は時速130字となった．
+			
+			一方で，円城塔本人によれば，円城塔は1時間で5枚（2000字），1日で20枚（8000字）生産するという\cite{ejt}．ここから，今回作成した小説生成機関は，円城塔本人と比較して$1/15$程度の性能であると評価出来る．
+
+			また，当該小説を創元SF短編賞\footnote{東京創元社が主催する，広義のSF小説を対象とした文学賞．AIに生成させた小説の投稿を認めている．}に投稿し，現在は審査中である．無論，投稿するという判断を行った時点で，既に定性的に十分な成果であると認めているのだが，客観的な評価である同賞の審査結果をもって，今回の試みの定性的な評価としたい．
+
+	\section{結論}
+
+		Apple silicon専用の機械学習フレームワークMLXと，そのツール群MLX-LM，日本語LLMのllm-jpを用いて，確率的に円城塔を模倣することが期待される小説生成機関を作成し，その作成手法の公開と作成結果の評価を行なった．
+
+		出力させること自体が面白く，また出力を眺めることもなかなか面白いのだが，その成果物を無加工のまま商業作品として流通させるまでには至っていない．商業作品の生成に用いるためには，内容の精査の効率を飛躍的に向上させる工学的な工夫が必要である．一方で，日本語として破綻していたり，変なアトラクタに吸引されてしまったりしたものを機械的に除いた場合，訓練されていない人間の書いた文章よりまともである．
+
+		円城塔は，アトラクタに吸引されて言葉遊びを繰り返しつつも，言葉遊びによって導かれた一見矛盾することが実は本質であり，それによって思いもよらない事物同士が数理的には同一であることを指摘し，アトラクタから一気に脱却してSF的ヴィジョンを提示する，という構造を多用する作家である．今回作成した確率的円城塔模倣機関には論理と数理がないので，言葉を捏ねくり回すだけに留まる場合が多く，円城塔の魅力の一部を確実に持ち合わせていない．
+
+		また，円城塔は多義的な言葉遣いや，情景描写をほとんど行わない作家である．これは自覚的なものなのだが，確率的円城塔模倣機関は，トークンが確率的に並べられているだけであるがゆえに，多義的で開かれた読みを可能とする文字列を提示することがある．円城塔コーパスと出現確率が同一であるのに，描かれる情景などが極端に異なることは，強烈な異化作用を文字列に与えている．今回のような，特定作家の模倣という取り組みは，同一出現確率であるにもかかわらず，元の文字列と全くかけ離れた文字列を出力するという方向で創作・研究に寄与する可能性がある．
+
+	\begin{thebibliography}{99}
+
+		\bibitem{ktjm} Akimasa Kitajima, Apple silicon専用機械学習フレームワークでLLMのファインチューニングをやってみた, 2024, \url{https://qiita.com/asamiKA/items/3fdf89771084e3625643}
+
+		\bibitem{mlx} Apple, MLX, \url{https://github.com/ml-explore/mlx}
+
+		\bibitem{mlxlm} Apple, MLX-LM, \url{https://github.com/ml-explore/mlx-examples/tree/main/llms/mlx_lm}
+
+		\bibitem{storage} 円城塔, 『通信記録保管所』, 2023, \url{https://github.com/EnJoeToh/stories_2000}
+
+		\bibitem{scanner} 円城塔, 『花とスキャナー』, 2023, \url{https://github.com/EnJoeToh/stories_10000}
+
+		\bibitem{tbys} Shinichiro Tabayashi, uv （pythonパッケージマネージャー）の使い方 詳細版, 2024, \url{https://zenn.dev/tabayashi/articles/52389e0d6c353a}
+
+		\bibitem{nii} 国立情報学研究所, llm-jp/llm-jp-3-13b, 2024, \url{https://huggingface.co/llm-jp/llm-jp-3-13b}
+
+		\bibitem{lora} Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, Weizhu Chen, LoRA : Low-Rank Adaptation of Large Language Models, 2024, \url{https://doi.org/10.48550/arXiv.2106.09685}
+
+		\bibitem{ibm} Bryan Clark, 量子化とは, IBM, 2024, \url{https://www.ibm.com/jp-ja/think/topics/quantization}
+
+		\bibitem{ted} Madhumita Murgia, Sci-fi writer Ted Chiang: ``The machines we have now are not conscious'', \textit{Financial Times}, 2023 \url{https://www.ft.com/content/c1f6d948-3dde-405f-924c-09cc0dcf8c84}
+
+		\bibitem{cre} 著作権法, \url{https://laws.e-gov.go.jp/law/345AC0000000048}
+
+		\bibitem{ndl} 国立国会図書館法, \url{https://laws.e-gov.go.jp/law/323AC1000000005}
+
+		\bibitem{aomr} 青森県, 句会記録「井泉水、桜磈子、滞留句会」, 青森県近代文学館HP, \url{https://warp.da.ndl.go.jp/info:ndljp/pid/284811/www.plib.net.pref.aomori.jp/top/museum/meihin_87.html}, WARPにより2009年3月4日に収集
+
+		\bibitem{tx} 文化庁著作権課, 『著作権テキスト』, 令和6年度版, \url{https://www.bunka.go.jp/seisaku/chosakuken/textbook/pdf/94141901_01.pdf}
+
+		\bibitem{ejt} 円城塔, 長さ、大きさを把握すること１, 2018, \url{https://scrapbox.io/enjoetoh/%E9%95%B7%E3%81%95%E3%80%81%E5%A4%A7%E3%81%8D%E3%81%95%E3%82%92%E6%8A%8A%E6%8F%A1%E3%81%99%E3%82%8B%E3%81%93%E3%81%A8%EF%BC%91}
+
+		\bibitem{knk} 金子邦彦, 「小説 進物史観」, 『カオスの紡ぐ夢の中で』, ハヤカワ文庫JA, 早川書房, 2010
+
+	\end{thebibliography}
+
+\end{document}

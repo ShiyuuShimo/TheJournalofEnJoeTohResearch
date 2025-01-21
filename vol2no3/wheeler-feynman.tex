@@ -1,0 +1,174 @@
+\documentclass[10pt, a5paper, twoside]{jsarticle}
+
+\usepackage{okumacro}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{amsmath}{}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{url}
+\usepackage{here}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{wrapfig}
+\usepackage{makeidx}
+\usepackage{braket}
+\usepackage{ascmac}
+\usepackage{fancyhdr}
+\usepackage[top=20truemm,bottom=20truemm,left=15truemm,right=15truemm]{geometry}
+
+\pagestyle{fancy}
+	\fancyhead{}
+	\fancyhead[RE]{円城塔研究}
+	\fancyhead[LO]{ホイーラー--ファインマン吸収体理論のためのノート}
+	\fancyhead[LE, RO]{\thepage}
+	\fancyfoot{}
+	\fancyfoot[LE, RO]{\footnotesize{The Journal of EnJoeToh Research, Vol.2, No.3, 2024}}
+\theoremstyle{definition}
+	\newtheorem{axi}{公理}
+	\newtheorem{dfn}{定義}
+	\newtheorem{thm}{定理}
+	\newtheorem{hyp}{予想}
+	\newtheorem{ths}{提唱}
+	\newtheorem{prn}{原理}
+
+\setcounter{page}{16}
+
+\begin{document}
+
+	~ %強制改行
+
+	\begin{center}
+
+		\Large{ホイーラー--ファインマン吸収体理論のためのノート}
+
+		\vspace{3mm}
+
+		\large{A note for Wheeler--Feynman absorver theory}
+
+		\vspace{3mm}
+		
+		\large{下村思游}
+
+	\end{center}
+
+	\section{マクスウェル方程式}
+
+		電磁気学の支配法則であるマクスウェル方程式は，以下の通り与えられる．
+		\begin{equation*}
+			\begin{cases}
+				\nabla \cdot \boldsymbol{E}(\boldsymbol{x}, t) = \displaystyle \frac{\rho (\boldsymbol{x}, t)}{\varepsilon_0} \\ \nabla \cdot \boldsymbol{B} (\boldsymbol{x}, t) = 0 \\ \nabla \times \boldsymbol{E}(\boldsymbol{x}, t) = - \displaystyle \frac{\partial \boldsymbol{B}(\boldsymbol{x}, t)}{\partial t} \\ \nabla \times \boldsymbol{B}(\boldsymbol{x}, t) = \mu_0 \boldsymbol{j}(\boldsymbol{x}, t) + \varepsilon_0 \mu_0 \displaystyle \frac{\partial \boldsymbol{E}(\boldsymbol{x}, t)}{\partial t}
+			\end{cases}
+		\end{equation*}
+
+		上記の4式は，それぞれ電場に対するガウス則，磁場に対するガウス則，ファラデーの電磁誘導則，アンペール--マクスウェル則である．
+
+		ここで，ベクトルポテンシャル \( \boldsymbol{A} \)，スカラーポテンシャル \( \phi \) を次のように定義する．
+		\begin{equation*}
+			\begin{cases}
+				\boldsymbol{B}(\boldsymbol{x}, t) \equiv \nabla \times \boldsymbol{A}(\boldsymbol{x}, t) \\ \boldsymbol{E}(\boldsymbol{x}, t) + \displaystyle \frac{\partial \boldsymbol{A}(\boldsymbol{x}, t)}{\partial t} \equiv - \nabla \phi (\boldsymbol{x}, t)
+			\end{cases}
+		\end{equation*}
+
+		スカラーポテンシャルとベクトルポテンシャル$(\phi, \boldsymbol{A})$を合わせて電磁ポテンシャルという．マクスウェル方程式は以下で定義するゲージ変換の下で不変である．
+		\begin{equation*}
+			\begin{cases}
+				\phi' (\boldsymbol{x}, t) \equiv \phi (\boldsymbol{x}, t) - \displaystyle \frac{u (\boldsymbol{x}, t)}{\partial t} \\ \boldsymbol{A}' (\boldsymbol{x}, t) \equiv \boldsymbol{A} (\boldsymbol{x}, t) + \nabla u(\boldsymbol{x}, t)
+			\end{cases}
+		\end{equation*}
+
+		ゲージ変換の取り方は自由であり，ここではゲージとして以下で与えられるローレンツゲージを採用する．
+		\begin{equation*}
+			\displaystyle \frac{1}{c^2} \frac{\partial \phi (\boldsymbol{x}, t)}{\partial t} + \nabla \cdot \boldsymbol{A}(\boldsymbol{x}, t) = 0
+		\end{equation*}
+
+		ローレンツゲージの下，電磁ポテンシャルを用いてマクスウェル方程式を書き換えたい．電磁ポテンシャルの定義より，電磁ポテンシャルは存在すれば電磁誘導則と磁場に対するガウス則を自動的に満たすので，電場に対するガウス則とアンペール--マクスウェル則だけを考えれば良い．
+
+		ダランベール演算子$\Box \equiv \Delta - \displaystyle \frac{1}{c^2} \frac{{\partial}^2}{\partial t^2}$を用いれば，それぞれ
+		\begin{equation*}
+			\begin{cases}
+				\Box \phi (\boldsymbol{x}, t) = - \displaystyle \frac{\rho (\boldsymbol{x}, t)}{\varepsilon_0} \\ \Box \boldsymbol{A}(\boldsymbol{x}, t) = - \mu_0 \boldsymbol{j} (\boldsymbol{x}, t)
+			\end{cases}
+		\end{equation*}
+		と表される．これらの方程式を電磁ポテンシャルに対するダランベール方程式，または単に波動方程式という．
+
+		このようにして，マクスウェル方程式は，電磁ポテンシャルの定義式と，ローレンツゲージの下で電磁ポテンシャルに対するダランベール方程式とに還元される．
+
+	\section{ダランベール方程式}
+
+		十分狭い領域に偏在する電荷や電流密度によって生じる，無限に広い領域の電磁場の振る舞いを知ることは，先述のダランベール方程式の特解を求めることに帰着される．ここで，グリーン関数
+		\begin{equation*}
+			\Box G (\boldsymbol{r}, \boldsymbol{x}, t, t') \equiv - \delta(\boldsymbol{r} - \boldsymbol{x}) \delta (\boldsymbol{t} - \boldsymbol{t'})
+		\end{equation*}
+		を求めれば，求めたいダランベール方程式の特解である電磁ポテンシャルは以下のように構成される．
+		\begin{equation*}
+			\begin{pmatrix} \phi (\boldsymbol{r}, t) \\ \boldsymbol{A} (\boldsymbol{r}, t) \end{pmatrix} = \displaystyle \int dt' \iiint dV \begin{pmatrix} \displaystyle \frac{1}{\varepsilon_0} \rho (\boldsymbol{x}, t') \\ \mu_0 \boldsymbol{j} (\boldsymbol{x}, t') \end{pmatrix} G (\boldsymbol{r}, \boldsymbol{x}, t, t')
+		\end{equation*}
+
+		以下，$\boldsymbol{r} - \boldsymbol{x} \mapsto \boldsymbol{x}, t - t' \mapsto t$なる変数変換を行う．グリーン関数の$t$に関するフーリエ変換$\widetilde{G}$を考えると，
+		\begin{equation*}
+			\widetilde{G} (\boldsymbol{x}, \omega) = \displaystyle \frac{1}{2 \pi} \int_{- \infty}^{\infty} G (\boldsymbol{x}, t') e^{i \omega t'} dt'
+		\end{equation*}
+
+		また，デルタ関数のフーリエ変換は以下のように表せる.
+		\begin{equation*}
+			\delta (t) = \displaystyle \frac{1}{2 \pi} \int_{- \infty}^{\infty} e^{-i \omega t} d \omega
+		\end{equation*}
+
+		したがって，変数変換後のグリーン関数は，
+		\begin{align*} \bigg( \Delta - \displaystyle \frac{1}{c^2} \frac{{\partial}^2}{\partial t^2} \bigg) \int_{- \infty}^{\infty} \widetilde{G} (\boldsymbol{x}, \omega) e^{-i \omega t} d \omega &= - \delta (\boldsymbol{x}) \frac{1}{2 \pi} \int_{- \infty}^{\infty} e^{- i \omega t} d \omega \\ \int_{- \infty}^{\infty} \bigg( \Delta + \displaystyle \frac{{\omega}^2}{c^2} \bigg) \widetilde{G} (\boldsymbol{x}, \omega) e^{-i \omega t} d \omega &= \int_{- \infty}^{\infty} \frac{- \delta (\boldsymbol{x})}{2 \pi} e^{-i \omega t} d \omega \\ \bigg( \delta + \displaystyle \frac{{\omega}^2}{c^2} \bigg) \widetilde{G} (\boldsymbol{x}, \omega) &= \frac{- \delta (\boldsymbol{x})}{2 \pi} \end{align*}
+		
+		これは非斉次のヘルムホルツ方程式である．ポアソン方程式のグリーン関数が$\displaystyle \frac{1}{4 \pi r}$であることと，デルタ関数の定義を用いれば，ヘルムホルツ方程式の解は，
+		\begin{equation*}
+			\widetilde{G} (\boldsymbol{x}, \omega) = \displaystyle \frac{1}{2 \pi} \frac{e^{\pm i \frac{\omega}{c} |\boldsymbol{x}|}}{4 \pi |\boldsymbol{x}|}
+		\end{equation*}
+
+		これを再度フーリエ変換すれば，ダランベール方程式のグリーン関数が得られる，
+		\begin{align*} G (\boldsymbol{x}, t) &= \int \displaystyle \frac{1}{2 \pi} \frac{e^{\pm i \frac{\omega}{c} |\boldsymbol{x}|}}{4 \pi |\boldsymbol{x}|} e^{-i \omega t} d \omega \\ &= \displaystyle \frac{1}{4 \pi |\boldsymbol{x}|} \delta \bigg(t \mp \frac{|\boldsymbol{x}|}{c} \bigg)\end{align*}
+
+		これを用いてダランベール方程式の特解が求められる．なお，再度変数変換して元の変数に戻した．
+		\begin{equation*}
+			\begin{cases}
+				\phi (\boldsymbol{r}, t) = \displaystyle \frac{1}{4 \pi \varepsilon_0} \iiint \frac{\rho (\boldsymbol{x}, t \mp \frac{|\boldsymbol{r} - \boldsymbol{x}|}{c})}{|\boldsymbol{r} - \boldsymbol{x}|} dV \\ \boldsymbol{A} (\boldsymbol{r}, t) = \displaystyle \frac{\mu_0}{4 \pi} \iiint \frac{\boldsymbol{j} (\boldsymbol{x}, t \mp \frac{|\boldsymbol{r} - \boldsymbol{x}|}{c})}{|\boldsymbol{r} - \boldsymbol{x}|} dV
+			\end{cases}
+		\end{equation*}
+		
+		これらのダランベール方程式の特解となるポテンシャルのうち，複号で負をとったものを遅延ポテンシャル，正をとったものを先進ポテンシャルという．
+
+	\section{検討}
+
+		遅延ポテンシャル・先進ポテンシャルは，ともに数学的に正しいダランベール方程式の特解であるが，物理学的に正しい解であるかはまだわからない．そこで，遅延ポテンシャル・先進ポテンシャルを物理学的に解釈し，解として相応しいか吟味する．
+
+		遅延ポテンシャルは，過去の電荷・電流密度が，現在の電磁ポテンシャルに影響を与えるということを意味する．一方で，先進ポテンシャルは，未来の電荷・電流密度が，現在の電磁ポテンシャルに影響を与えることを意味する．これは因果律に反しており，物理学的に認め難い．
+
+		以上のことから，一般に，先進ポテンシャルは因果律に反するため消去し，遅延ポテンシャルのみを考慮する．もちろん遅延ポテンシャルはダランベール方程式の解であるから，問題は生じない．
+
+		これに対して，ホイーラーとファインマンは，因果律を一旦棚上げし，先進ポテンシャル・遅延ポテンシャルを対等に扱うような，時間対称性を強調した電磁気学の存在を理論的に検証した\footnote{これが，本理論がホイーラー--ファインマン時間対称性理論とも呼ばれる理由である，}．ホイーラーとファインマンは，電子の発する電磁波（光）を吸収する吸収体を仮定し，あらゆる条件で精密な計算を行ったが，いずれの場合においても，遅延ポテンシャルのみを考慮すればよいという結論となった\footnote{後続の計算も試みたが，時間が足らず完成させられなかった．今後完全版の解説を公開する予定である．}．
+
+	\clearpage
+
+	\begin{thebibliography}{99}
+
+		\bibitem{wf1} John A. Wheeler, Richard P. Feynman, Interaction with the absorber as mechanism of radiation, Review of modern physics, 17(2-3), 157-181, 1945
+
+		\bibitem{wf2} John A. Wheeler, Richard P. Feynman, Classical electrodynamics in terms of direct interparticle action, Review of modern physics, 21(3), 425-433, 1949
+
+		\bibitem{hoyle} Fred Hoyle, Jayant V. Narlikar, Cosmology and action-at-a-distance electrodynamics, Reviews of modern physics, 67(1), 113-155, 1995
+		
+		\bibitem{schu} Lawrence S. Schulman, Formulation and justification of the Wheeler-Feynman absorber theory, Foundations of physics, (10), 841-853, 1980
+		
+		\bibitem{tet} Hugo Tetrode, Über den Wirkungszusammenhang der Welt. Eine Erweiterung der klassischen Dynamik, Zeitschrift für Physik, (10), 317-328, 1922
+		
+		\bibitem{dirac} Paul A. M. Dirac, Classical theory of radiating electrons, Proceedings of the royal society of London, 167(929), 1938
+		
+		\bibitem{feyn} Richard P. Feynman, The Feynman lecture on physics, vol. Ⅱ, \url{https://www.feynmanlectures.caltech.edu}
+		
+		\bibitem{thesis} ローリー・ブラウン, ファインマン経路積分の発見, 岩波書店, 2016
+		
+		\bibitem{sngw} 砂川重信, 理論電磁気学 第3版, 紀伊国屋書店, 1999
+		
+		\bibitem{nkmr} 中村哲, 須藤彰三, 電磁気学, 朝倉書店, 2010
+
+	\end{thebibliography}
+
+\end{document}
