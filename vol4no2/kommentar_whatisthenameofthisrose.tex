@@ -1,0 +1,339 @@
+\documentclass[10pt, a5paper, twoside]{ltjsarticle}
+
+%\usepackage{okumacro}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{xurl}
+\usepackage{here}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{makeidx}
+\usepackage{braket}
+%\usepackage{ascmac}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+%\usepackage{otf}
+\usepackage{luatexja-otf}
+\usepackage{luatexja-ruby}
+\usepackage[top=20truemm,bottom=20truemm,left=15truemm,right=15truemm]{geometry}
+\usepackage{mathrsfs}
+
+\pagestyle{fancy}
+	\fancyhead{}
+	\fancyhead[RE]{円城塔研究}
+	\fancyhead[LO]{資料：コンメンタール「What is the Name of This Rose?」}
+	\fancyhead[LE, RO]{\thepage}
+	\fancyfoot{}
+	\fancyfoot[LE, RO]{\footnotesize{The Journal of EnJoeToh Research, Vol.4, No.3, 2026} }
+
+\tcbuselibrary{breakable, theorems, skins}
+
+\newtcbtheorem{axm}{公理}{enhanced, breakable=true}{axm}
+\newtcbtheorem[use counter from=axm]{dfn}{定義}{enhanced, breakable=true}{dfn}
+\newtcbtheorem[use counter from=axm]{thm}{定理}{enhanced, breakable=true}{thm}
+\newtcbtheorem[use counter from=axm]{sys}{系}{enhanced, breakable=true}{sys}
+\newtcbtheorem[use counter from=axm]{hyp}{予想}{enhanced, breakable=true}{hyp}
+\newtcbtheorem[use counter from=axm]{ths}{提唱}{enhanced, breakable=true}{ths}
+\newtcbtheorem[use counter from=axm]{prn}{原理}{enhanced, breakable=true}{prn}
+\newtcbtheorem[use counter from=axm]{clm}{主張}{enhanced, breakable=true}{clm}
+\newtcbtheorem[use counter from=axm]{prb}{問題}{enhanced, breakable=true}{prb}
+\newtcbtheorem[use counter from=axm]{prf}{証明}{enhanced, breakable=true, colback=white, attach boxed title to top left={xshift=2mm, yshift=-2mm}}{prf}
+
+\setcounter{page}{38}
+
+\newcommand{\hyphen}{\insertkanjiskip--\insertkanjiskip}
+
+\newcommand{\cross}[1]{%
+\mbox{\vbox{\kern 1pt\hbox{\vbox{\hrule
+\kern 2pt\hbox{\ensuremath{\vphantom{b}#1}\kern 2pt}}\vrule\kern 1pt}}}\,}
+
+\begin{document}
+
+	~ %強制改行
+
+	\begin{center}
+
+		\Large{コンメンタール「What is the Name of This Rose?」}
+
+		\vspace{3mm}
+
+		\large{Commentary of short story \textit{What is the Name of This Rose?}}
+
+		\vspace{3mm}
+
+		\large{下村思游}
+
+	\end{center}
+
+	\vspace{3mm}
+
+	\section{解説}
+
+        頁数・行数は『Boy's Surface』紙版\cite{boys}に準拠した．
+
+        \subsection{題名}
+
+            ウンベルト・エーコ『薔薇の名前』\cite{eco1,eco2}とレイモンド・M・スマリヤン``What is the Name of This Book?''（『この本の名は？』\cite{name}）に由来する．また，「Gernsback Intersection」がウィリアム・ギブスンの作品名から引かれていたことを考慮すると，ギブスン「ニュー・ローズ・ホテル」の影響も指摘されるが，本作中に明示的にギブスンの同作の要素が見られないことから．関連性はほとんど否定してよい．
+
+            『薔薇の名前』が引かれていることについて．同作はエーコの専門である中世ヨーロッパにおける思想史を土台に，無数の書物からの膨大な引用によって構成されている．エーコと同様に衒学的な引用を多用したボルヘスもまた，ブルゴスのホルへという登場人物としてパロディ化されている．また，登場人物の1人であるバスカヴィルのウィリアムは，アーサー・コナン・ドイル「バスカヴィル家の犬」を通じてシャーロック・ホームズのパロディでありつつ，オッカムのウィリアムのパロディでもある．
+
+            このオッカムのウィリアムはオッカムの剃刀で有名であり，現代においても科学哲学の文脈，特に科学的実在論においてよく用いられる．この科学的実在論は，普遍論争とも密接に関連している\cite{todayamarev}．また，オッカムのウィリアムは中世最大の論争である普遍論争の主要な論者の1人でもある．これらのことから，『薔薇の名前』は本書収録作を貫く主題である，80年代から00年代にかけてのポストモダン的状況において科学者の取るべき知的態度の再考をより強調するために導入されたと解釈することが出来る．
+
+        \subsection{エピグラフ}
+
+            ルキアノスの小説「本当の話」からの引用．引用されている本文から，底本は呉茂一訳の筑摩書房『ルキアノス短編集1』\cite{kure1}あるいは呉茂一・山田潤二の共訳による養徳社版『本当の話』\cite{kureyamada}\footnote{初版・再版があるが，該当する本文に異同がないのでどちらに依拠しているかは判別不能．}と判断される．後年刊行された呉茂一訳のちくま文庫版『本当の話』\cite{kure2}では訳が全面的に改められており，底本ではないことがわかる．
+
+            ローマ帝国においてギリシア語で執筆されたアッシリア人ルキアノスの短編小説「本当の話」は，これから書くことはすべて嘘であると宣言して始まる法螺話．円城塔は，その宣言の箇所を引用している．テクストが「私は噓つきです」と主張しているということで，これはただちに自己言及の逆理に帰着される．ここから，本作の主張を採用するもしないも，すべては読者の一存であるとの解釈も成り立つ．
+
+            また，「本当の話」は架空旅行記の先駆けであり，後続のフランソワ・ラブレー『ガルガンチュワ物語』，シラノ・ド・ベルジュラック『月世界旅行記』，ジョナサン・スウィフト『ガリヴァー旅行記』，『法螺吹き男爵の冒険』などの架空旅行記に影響を与えている\cite{kure2}p.8．モンテスキューも同名の小説\cite{montesquieu}を残していることに注意したい．
+
+            ルキアノスを引用した意図について．言語学者，西洋古典学者の高津春繁%こうづはるしげ
+            は，ルキアノスを以下のように評している\cite{koudu}p.185．
+
+            \begin{quote}
+                ルーキアーノスは，しかし，彼自ら称するごとく，単なる弁辞家でもなければ哲学者でもない．彼の目的は気のきいた愉快な作品によって読者を喜ばせ，自らもその仲間に入って笑おうというのであって，彼が或いは哲学を，或いは弁辞学を，或いは宗教を攻撃する時，あまりまじめにとることは禁物である．彼はいかなるものもまじめには信じていないが，しかし常に良識の持主である．
+            \end{quote}
+
+            この評価は，ルキアノスだけでなく，円城塔に対してもよくあてはまるように思われる．本質的に法螺吹きであり，数理科学を専攻しつつも数理科学への心の底からの信仰はなく，かといって特定の宗教への信仰も特に見られない．とはいえ有害な疑似科学は明確に馬鹿にする．仏教史を混ぜ返した『コード・ブッダ』，実証主義歴史学を混ぜ返した『去年，本能寺で』がその好例\footnote{筒井康隆も似たようなものだが，筒井が愚かな人物や現象に対して自らも同じレベルに降りて行き，同じ目線から徹底的に馬鹿にしてこき下ろすのに対して，円城塔は暗に揶揄するだけに留め，一度読んだだけでは揶揄であることすらわからないこともある点が異なる．}．自身の姿勢に近い人物の残した，自身が書いたのかと見紛うほどの文章をわざわざ引用しているのは，この類似性を顕示する意図があったものと考えられる．
+
+            なお，ルキアノスが「嘘好き，または懐疑者」というテクストを残しているのは興味深いが，ここでは検討しない．
+
+        \subsection{p.269, l.1}
+
+            \begin{quote}
+                「解説だ，当然のことながら．」
+            \end{quote}
+
+            自作解題の冒頭にこのような文章が置かれるのもまた当然のことなのだが，とにかくかっこいい．
+
+        \subsection{p.269, l.2-5}
+
+            \begin{quote}
+                「話は一年ほど前にさかのぼる．〜」
+            \end{quote}
+
+            文中で種明かしされている通り，ホルヘ・ルイス・ボルヘス「トレーン，ウクバール，オルビス・テルティウス」を適宜改変しつつもほぼそのまま引き写してきたもの．
+
+            これもまた文中に明記されているが，大堂林恭甫は金子邦彦の小説「進物史観」\footnote{2025年に会った際，円城塔は「進物史観」について，結局金子さんが正しかった，と述べていた．}に登場する小説生成プログラムのひとつ．円城塔の筆名の元ネタとなった円城塔李久のほか，綾野川沙水，竜造寺輝峰，七階堂流雲，飛龍園鳳来，紫園京水が登場する．
+
+            本書のうち，本作に対して註釈を与えることを通じて，私は無数の無知を晒すことになるだろう．それを強く自覚しつつ，臆することなく註釈を与えていく．私は大堂林として振る舞うことを目指し，結局なり損ねて阿呆の画廊の筆頭を飾るだろう．それでよい．阿呆の画廊の筆頭で，より優れた解説者の登場を待つ．
+
+        \subsection{p.275, l.7}
+
+            \begin{quote}
+                「\ruby{世界燃焼}{エピキュローシス}」
+            \end{quote}
+
+            ストア派の哲学者が信じていた神話．エルゴード理論やその先のロシア宇宙主義にも通じるように思われる．詳細はミルチャ・エリアーデ\footnote{円城塔はエリアーデの小説『ムントゥリャサ通りで』を好んでいることを公言している\cite{sfm}．どちらを先に読んだのかは定かでないが，エリアーデからの影響に注意するべきだろう．}『永遠回帰の神話』\index{eliade}\cite{eliade}を参照されたい．エーコ『薔薇の名前』のクライマックスも世界燃焼であったことに注意．
+
+        \subsection{p.275, l.15-16}
+
+            \begin{quote}
+                「もしもあなたがまだ目にしたことのない本を自分の文章の中に見出したいなら，自分でそれを書くしかないのです．」
+            \end{quote}
+
+            「Boy's Surface」に登場したコルモゴロフ複雑性に関する議論を意識したものか．改めて，無限文字列から任意の文字列を検索する検索式は，その文字列自身に一致する．
+
+        \subsection{p.277, l.13}
+
+            \begin{quote}
+                「桃色のカバーの表紙と背」
+            \end{quote}
+
+            単行本版（Jコレクション）\cite{boysj}の特徴に一致する．本作は単行本刊行時には存在せず，文庫版刊行時に書き下ろしとして収録されていることから，単行本版への言及は自己言及ではない．
+
+        \subsection{p.278, l.11-12}
+
+            \begin{quote}
+                「文章の上に上書きされる渦巻き文様を，〜」
+            \end{quote}
+
+            「文章の上に上書きされる渦巻き文様」は「Goldberg Invariant」のこと．これは本作の扉に掲げられている図の説明であると解釈していいだろう．同様に，テープ/マシンは「Your Heads Only」，「直交する〜」は「Gernsback Intersection」と比定してよい．
+
+        \subsection{p.280, l.14-p.281, l.5}
+
+            \begin{quote}
+                「わたしは，第四短編におけるアガートをビー玉みたいな女の子として〜」
+            \end{quote}
+
+            「Gernsback Intersection」に登場するアガートとフレガートは，高橋源一郎『さようなら，ギャングたち』の章題のひとつ「アガートは大好きさ，フレガートが」からの引用であり，それはジャン・コクトー「恐るべき子供たち」からの引用であって，さらにシャルル・ボードレール『悪の華』の「憂鬱と放浪」に遡れ，ポール・ヴァレリーの未完の遺稿『アガート』からの影響も指摘出来るという\footnote{ヴァレリーまで考慮に入れる場合は，ヴァレリーの娘の名前がアガートであるという事実にも注意する必要がある．「Boy's Surface」に登場するフランシーヌ・フランスがルネ・デカルトの娘フランシーヌに由来しているということとも照応する可能性がある．}．
+
+            コクトー「恐るべき子供たち」において，アガートという人名について，「ビー玉みたいな名前の女の子なの」という表現がある．文中にもある通り，ここからは「Boy's Surface」に登場する“青く澄み透る高次元球体”であるレフラー球が直ちに連想される．
+
+            アガートは瑪瑙(agate)のこと．「アガート，縞模様，瑪瑙はすぐさま連結される．」とあるのはこのこと．瑪瑙は多孔質であり，「任意の色に染色可能」なのも事実．一方で，多孔質であるということから，メンガーのスポンジを連想してしまうのは飛躍か．
+
+        \subsection{p.281, l.13-16}
+
+            \begin{quote}
+                「ただ一単語を解説するのにこれだけの分量が必要ならば，解説は本文の量を超えてしまうこと疑いないし，〜」
+            \end{quote}
+
+            まさに，ここで懸念されている事態が本書において生じている．
+
+        \subsection{p.282, l.3-6}
+
+            \begin{quote}
+                「せいぜい，解析接続について数学辞典くらいを引いていただければと〜」
+            \end{quote}
+
+            これを実際に行った読者がどれだけいるだろうか．数学辞典としては，岩波書店\cite{iwanami}と朝倉書店\cite{asakura}から刊行されている2冊が有名である．円城塔は，より手軽な『岩波数学入門辞典』\cite{iwanamiint}を「一家に一冊」として推薦している\footnote{「一家に一冊もしものための数学辞典」\url{https://x.com/rikoushonotana/status/402707462370758656}}．
+
+            解析接続とは，ある領域で定義された正則関数の定義域を，より広い定義域へと拡大してやる操作のことである．具体例は次節で見る．
+
+            なお，正則関数とは以下のように定義される\cite{sugiura1}．
+
+            \begin{dfn}{複素微分可能，正則，正則関数}{}
+                $\mathbb{C}$上の開集合$D$で定義された複素関数$f$について，ある点$a \in D$において
+                \begin{align*}
+                    \lim_{h \neq 0, h \to \infty} \frac{f(a+h) - f(a)}{h} = b \,\,\, (b \in \mathbb{C})
+                \end{align*}
+                が存在するとき，$f$は$a$で\textbf{複素微分可能}であるという．また，$f$が領域$D$の各点で複素微分可能であるとき，$f$は$D$で\textbf{正則}であるといい，このような$f$を\textbf{正則関数}であるという．
+            \end{dfn}
+
+            正則性は複素関数論において最も基本的かつ重要な性質である\footnote{正則関数でない関数を複素関数論で扱うことはまずない．そもそも，実数体$\mathbb{R}$を複素平面$\mathbb{C}$へ拡張し，演算規則を適当に定めたものが複素数体$\mathbb{C}$であるから，$\mathbb{C}$上で正則でない関数は実関数としても性質が悪く，対象にしたいものではない．}．
+
+        \subsection{p.282, l.7-10}
+
+            \begin{quote}
+                「あるいはリーマン予想について．」
+            \end{quote}
+
+            リーマン予想は「Boy's Surface」「Your Heads Only」「Gernsback Intersection」の3作に登場する．リーマン予想が『Boy's Surface』という短篇集においてどのような役割を担っているかは「わたし自身に対しても秘されている」とのことだが，まずはリーマン予想を概観したい．
+
+            リーマン予想は以下のように定式化される．
+
+            \begin{hyp}{リーマン予想}{}
+				リーマンのゼータ関数の非自明な零点の実部はすべて$\displaystyle \frac{1}{2}$であろう．
+			\end{hyp}
+
+            ここで，リーマンのゼータ関数の具体的な表式を与えたいのだが，準備が必要である．まず，オイラーは以下の関係（オイラーのゼータ関数）を発見した．
+
+            \begin{thm}{オイラーのゼータ関数}{}
+                任意の実数$s$に対して，以下の関係が常に成り立つ．
+                \begin{align*}
+                    \zeta (s) = \sum_{n=1}^\infty n^{-s} = \prod_{p:素数} (1 - p^{-s})^{-1}
+                \end{align*}
+            \end{thm}
+
+            これに対して，リーマンは，定義域を$s \in \mathbb{R} \to z \in \mathbb{C}$と拡張してもゼータ関数が成り立つことを指摘し，実際に解析接続を行なった\cite{150y}．これからリーマンのゼータ関数の解析接続を行うが，これはリーマンの流儀ではなく，オイラーの流儀に基づくものである．
+
+            \begin{thm}{リーマンのゼータ関数}{}
+                任意の複素数$s$に対して，$\zeta(s)$は以下のように解析接続される．
+                \begin{enumerate}
+                    \item $\mathrm{Re}(s) > 1$の場合（オイラーのゼータ関数）
+                        \begin{align*}
+                            \zeta (s) = \sum_{n=1}^\infty n^{-s} = \lim_{N \to \infty} \sum^N_{n=1} n^{-s}
+                        \end{align*}
+                    \item $0 < \mathrm{Re}(s) \leq 1$の場合
+                        \begin{align*}
+                            \zeta (s) = \lim_{N \to \infty} \Biggl\{ \sum^N_{n=1} n^{-s} - \frac{N^{1-s}}{1-s} \Biggr\}
+                        \end{align*}
+                    \item $-1 < \mathrm{Re}(s) \leq 0$の場合
+                        \begin{align*}
+                            \zeta (s) = \lim_{N \to \infty} \Biggl\{ \sum^N_{n=1} n^{-s} - \biggl( \frac{N^{1-s}}{1-s} + \frac{1}{2} N^{-s} \biggr) \Biggr\}
+                        \end{align*}
+                    \item $-3 < \mathrm{Re}(s) \leq -1$の場合
+                        \begin{align*}
+                            \zeta (s) = \lim_{N \to \infty} \Biggl\{ \sum^N_{n=1} n^{-s} - \biggl( \frac{N^{1-s}}{1-s} + \frac{1}{2} N^{-s} - \frac{1}{12} sN^{-s-1} \biggr) \Biggr\}
+                        \end{align*}
+                \end{enumerate}
+                以下同様．
+            \end{thm}
+
+            リーマンのゼータ関数の自明な零点として，$s=-2$が知られている．実際に4.の表式のもと$\zeta(-2)$を計算すると，
+            \begin{gather*}
+                \zeta (-2) = \lim_{N \to \infty} \Biggl\{ \sum^N_{n=1} n^2 - \biggl( \frac{N^3}{3} + \frac{1}{2}N^2 +\frac{1}{6}N \biggr) \Biggr\}
+                \intertext{ここで，}
+                \sum^N_{n=1} n^2 = \frac{N^3}{3} + \frac{1}{2}N^2 +\frac{1}{6}N
+            \end{gather*}
+            したがって，$\zeta(-2)=0$が直ちに示される．同様にして，$\zeta(-2n)=0\,(n \in \mathbb{N})$が示される．
+
+            また，「その解明は将来的なひとつの課題だ．」とあるのは，学術論文における同様の文言を意識したギャグ．
+
+        \subsection{p.288, 3-4}
+
+            \begin{quote}
+                「ロンドン．〜」
+            \end{quote}
+
+            「Boy's Surface」に登場するベンジャミン・ロンドン，「Gernsback Intersection」に登場するレオナルド・ロンドンの名字が一致していることについて，物理学者フリッツ・ロンドンと同じく物理学者ハインツ・ロンドンの兄弟に無意識に由来しているかもしれないとする．ロンドン兄弟はマイスナー効果\footnote{超伝導体の内部磁場が0になる現象．}を現象論的\footnote{今目の前で観測されている現象に注目し，その現象のみを数学的に記述する態度のこと．電磁気学を例にすれば，ファラデーの電磁誘導則は電磁誘導を現象論的に記述する方程式であり，電磁誘導則を数学的に内包するマクスウェル方程式は本質的．}に記述するロンドン方程式で有名．
+
+            また，「時代が異なるとはいえ」という記述から，収録作4作は時代が異なるものの同じ世界を舞台としていたことがここで初めて示唆される．
+
+        \subsection{p.288, l.7-8}
+
+            \begin{quote}
+                「あるいは引用をまだ続けるとか．ベケットの『モロイ』やナボコフの『ロリータ』，ソレルスの『秘密』からの引用を一字一句明かしていくとか．」
+            \end{quote}
+
+            ナボコフ『ロリータ』については指摘出来ているが，ベケット『モロイ』\cite{beckett}とソレルス『秘密』\footnote{円城塔は『秘密』を好んでいることを公言している\cite{sfm}．}\cite{sollers}についてはまったく触れられていない．私が註釈者として失敗していることは明白であり，この欠落の補充については今後の課題としたい．無論，他者による補充についても期待している．
+
+        \subsection{p.289, l.5-8}
+
+            \begin{quote}
+                「その王冠を戴く者がいるとするなら，それは最早わたしたちの視覚の及ばない，高次元の空間に棲む生き物だろう．〜」
+            \end{quote}
+
+            円城塔は，対象であって，有限の文字列によって指示可能な対象であるのだが，現実世界において構成不可能な対象についての考察をしばしば行う．生成に無限回の操作が必要なシェルピンスキーのギャスケット，カントール集合のほか，その検索式とそれを生成することが等価になってしまった文字列が例として挙げられる．
+
+            この考察は本質的にコルモゴロフ複雑性やクワインから来るものであり，一貫して複雑なものを扱ってきた『Boy's Surface』を締めくくるのに相応しい．ここで，クワインは以下のように定義される．
+
+            \begin{dfn}{クワイン}{}
+                \textbf{クワイン}とは，自身と同じ文字列を出力するような文字列のことである．
+            \end{dfn}
+
+	\begin{thebibliography}{99}
+
+		\bibitem{boys} 円城塔, 『Boy's Surface』, ハヤカワ文庫JA, 早川書房, 2011
+
+        \bibitem{eco1} ウンベルト・エーコ, 『薔薇の名前 上』, 完全版, 東京創元社, 2025
+
+        \bibitem{eco2} ウンベルト・エーコ, 『薔薇の名前 下』, 完全版, 東京創元社, 2025
+
+        \bibitem{name} レイモンド・M・スマリヤン, 『この本の名は？』, 日本評論社, 2013
+
+        \bibitem{todayamarev} 藤田翔, 戸田山和久『科学的実在論を擁護する』, \textit{Tokyo Academic Review of Books}, (22), 2021, \url{https://doi.org/10.52509/tarb0022}
+
+        \bibitem{zushi} 図師宣忠, 『エーコ「薔薇の名前」』, 慶應義塾大学出版会, 2021
+
+        \bibitem{todayama} 戸田山和久, 『科学的実在論を擁護する』, 名古屋大学出版会, 2015
+
+        \bibitem{kure1} 『ルキアノス短編集1』, 筑摩書房, 1943
+
+        \bibitem{kureyamada} ルキアノス, 『本当の話』, 養徳叢書, 養徳社, 1947
+
+        \bibitem{kure2} ルキアノス, 『本当の話』, ちくま文庫, 筑摩書房, 1989
+
+        \bibitem{montesquieu} モンテスキュー, 『本当の話』, 岩波文庫, 岩波書店, 2026
+
+        \bibitem{koudu} ルーキアーノス, 『遊女の対話 : 他三篇』, 岩波文庫, 岩波書店, 1961
+
+        \bibitem{eliade} ミルチア・エリアーデ, 『永遠回帰の神話』, 未來社, 1963
+
+        \bibitem{sfm} 円城塔, 大森望, 円城塔インタビュウ, \textit{SFマガジン}, \textbf{47}(7)(615), 6-7 \& 88-91, 2007
+
+        \bibitem{boysj} 円城塔, 『Boy's Surface』, 早川書房, 2008
+
+        \bibitem{iwanami} 日本数学会, 『岩波数学辞典』, 第4版, 岩波書店, 2007
+
+        \bibitem{asakura} 川又雄二郎, 坪井俊, 楠岡成雄, 新井仁之, 『朝倉数学辞典』, 朝倉書店, 2016
+
+        \bibitem{iwanamiint} 青本和彦, 上野健爾, 加藤和也, 神保道夫, 砂田利一, 高橋陽一郎, 深谷賢治, 俣野博, 室田一雄, 『岩波数学入門辞典』, 岩波書店, 2005
+
+        \bibitem{sugiura1} 杉浦光夫, 『解析入門1』, 東京大学出版会, 1980
+
+        \bibitem{150y} 黒川信重, 『リーマン予想の150年』, 岩波書店, 2009
+
+        \bibitem{beckett} サミュエル・ベケット, 『モロイ』, 河出書房新社, 2019
+
+        \bibitem{sollers} フィリップ・ソレルス, 『秘密』, 集英社, 1994
+
+    \end{thebibliography}
+
+\end{document}
